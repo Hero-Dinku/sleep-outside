@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Outside | Checkout</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        .checkout-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .order-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .order-items {
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-totals {
+            border-top: 2px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .grand-total {
+            font-size: 1.2rem;
+            color: #27ae60;
+            border-top: 2px solid #eee;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #219653;
+        }
+
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="divider">
+        <div class="logo">
+            <img src="../images/noun_Tent_2517.svg" alt="tent image for logo">
+            <a href="../index.html">Sleep<span class="highlight">Outside</span></a>
+        </div>
+    </header>
+
+    <main class="divider">
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <h2>Checkout</h2>
+                
+                <div class="success-message" id="successMessage">
+                    Thank you for your order! Your order has been placed successfully.
+                </div>
+
+                <form id="checkoutForm">
+                    <div class="form-section">
+                        <h3>Shipping Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                                <div class="error-message" id="firstNameError">Please enter your first name</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                                <div class="error-message" id="lastNameError">Please enter your last name</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Street Address *</label>
+                            <input type="text" id="address" name="address" required>
+                            <div class="error-message" id="addressError">Please enter your street address</div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input type="text" id="city" name="city" required>
+                                <div class="error-message" id="cityError">Please enter your city</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State *</label>
+                                <select id="state" name="state" required>
+                                    <option value="">Select State</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                                <div class="error-message" id="stateError">Please select your state</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code *</label>
+                            <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}" required>
+                            <div class="error-message" id="zipCodeError">Please enter a valid 5-digit ZIP code</div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Payment Information</h3>
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number *</label>
+                            <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+                            <div class="error-message" id="cardNumberError">Please enter a valid card number</div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date *</label>
+                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+                                <div class="error-message" id="expiryDateError">Please enter a valid expiry date</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV *</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                                <div class="error-message" id="cvvError">Please enter a valid CVV</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">Place Order</button>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="order-items" id="orderItems">
+                    <!-- Order items will be dynamically inserted here -->
+                </div>
+                <div class="order-totals">
+                    <div class="total-line">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-line">
+                        <span>Tax:</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="total-line">
+                        <span>Shipping:</span>
+                        <span id="shipping">$0.00</span>
+                    </div>
+                    <div class="total-line grand-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>&copy;NOT a real business</footer>
+
+    <script>
+        // Checkout functionality
+        class Checkout {
+            constructor() {
+                this.cartItems = this.getCartItems();
+                this.init();
+            }
+
+            init() {
+                this.displayOrderSummary();
+                this.setupEventListeners();
+            }
+
+            getCartItems() {
+                // In a real app, this would come from localStorage or an API
+                // For demo purposes, using sample data
+                return [
+                    {
+                        id: "Dinku",
+                        name: "Dinku Tent - 3-Person, 3-Season",
+                        price: 199.99,
+                        quantity: 1
+                    },
+                    {
+                        id: "north-face-talus-4",
+                        name: "The North Face Talus Tent - 4-Person, 3-Season",
+                        price: 299.99,
+                        quantity: 2
+                    }
+                ];
+            }
+
+            displayOrderSummary() {
+                const orderItemsContainer = document.getElementById('orderItems');
+                const subtotalElement = document.getElementById('subtotal');
+                const taxElement = document.getElementById('tax');
+                const shippingElement = document.getElementById('shipping');
+                const totalElement = document.getElementById('total');
+
+                let subtotal = 0;
+                let html = '';
+
+                this.cartItems.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    html += `
+                        <div class="order-item">
+                            <span>${item.name} (x${item.quantity})</span>
+                            <span>$${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                orderItemsContainer.innerHTML = html;
+
+                const tax = subtotal * 0.08;
+                const shipping = subtotal > 100 ? 0 : 10;
+                const total = subtotal + tax + shipping;
+
+                subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+                taxElement.textContent = `$${tax.toFixed(2)}`;
+                shippingElement.textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+                totalElement.textContent = `$${total.toFixed(2)}`;
+            }
+
+            setupEventListeners() {
+                const form = document.getElementById('checkoutForm');
+                const submitBtn = document.getElementById('submitBtn');
+
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (this.validateForm()) {
+                        this.processOrder();
+                    }
+                });
+
+                // Real-time validation
+                const inputs = form.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', () => {
+                        this.validateField(input);
+                    });
+                    
+                    input.addEventListener('input', () => {
+                        this.clearError(input);
+                    });
+                });
+            }
+
+            validateForm() {
+                const form = document.getElementById('checkoutForm');
+                const inputs = form.querySelectorAll('input, select');
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (!this.validateField(input)) {
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            }
+
+            validateField(field) {
+                const errorId = field.id + 'Error';
+                const errorElement = document.getElementById(errorId);
+
+                if (field.hasAttribute('required') && !field.value.trim()) {
+                    this.showError(field, errorElement, 'This field is required');
+                    return false;
+                }
+
+                // Specific validations
+                switch(field.id) {
+                    case 'zipCode':
+                        if (!/^\d{5}$/.test(field.value)) {
+                            this.showError(field, errorElement, 'Please enter a valid 5-digit ZIP code');
+                            return false;
+                        }
+                        break;
+                    
+                    case 'cardNumber':
+                        if (!/^\d{16}$/.test(field.value.replace(/\s/g, ''))) {
+                            this.showError(field, errorElement, 'Please enter a valid 16-digit card number');
+                            return false;
+                        }
+                        break;
+                    
+                    case 'expiryDate':
+                        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(field.value)) {
+                            this.showError(field, errorElement, 'Please enter a valid expiry date (MM/YY)');
+                            return false;
+                        }
+                        break;
+                    
+                    case 'cvv':
+                        if (!/^\d{3,4}$/.test(field.value)) {
+                            this.showError(field, errorElement, 'Please enter a valid CVV');
+                            return false;
+                        }
+                        break;
+                }
+
+                this.clearError(field);
+                return true;
+            }
+
+            showError(field, errorElement, message) {
+                field.style.borderColor = '#e74c3c';
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+
+            clearError(field) {
+                field.style.borderColor = '#ddd';
+                const errorId = field.id + 'Error';
+                const errorElement = document.getElementById(errorId);
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            processOrder() {
+                const submitBtn = document.getElementById('submitBtn');
+                const successMessage = document.getElementById('successMessage');
+
+                // Simulate processing
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing...';
+
+                setTimeout(() => {
+                    successMessage.style.display = 'block';
+                    submitBtn.textContent = 'Order Placed!';
+                    
+                    // In a real app, you would redirect to confirmation page
+                    // window.location.href = 'confirmation.html';
+                }, 2000);
+            }
+        }
+
+        // Initialize checkout when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new Checkout();
+        });
+    </script>
+</body>
+</html>
