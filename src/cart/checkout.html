@@ -4,8 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sleep Outside | Checkout</title>
-    <link rel="stylesheet" href="../css/style.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            color: #f39c12;
+        }
+
         .checkout-container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -83,8 +127,29 @@
         .order-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
+            align-items: center;
+            padding: 0.75rem 0;
             border-bottom: 1px solid #eee;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-info {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #27ae60;
         }
 
         .order-totals {
@@ -96,15 +161,15 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
-            font-weight: 600;
         }
 
-        .grand-total {
+        .total-line.grand-total {
             font-size: 1.2rem;
             color: #27ae60;
             border-top: 2px solid #eee;
             padding-top: 1rem;
             margin-top: 1rem;
+            font-weight: 700;
         }
 
         .submit-btn {
@@ -144,6 +209,47 @@
             border-radius: 4px;
             margin-bottom: 1rem;
             display: none;
+            border: 1px solid #c3e6cb;
+        }
+
+        .back-to-cart {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-to-cart:hover {
+            text-decoration: underline;
+        }
+
+        .payment-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 25px;
+            background: #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 3rem;
         }
 
         @media (max-width: 768px) {
@@ -154,20 +260,25 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+
+            .order-summary {
+                position: static;
+            }
         }
     </style>
 </head>
 <body>
     <header class="divider">
         <div class="logo">
-            <img src="../images/noun_Tent_2517.svg" alt="tent image for logo">
-            <a href="../index.html">Sleep<span class="highlight">Outside</span></a>
+            <img src="https://hero-dinku.github.io/images/noun_Tent_2517.svg" alt="tent image for logo">
+            <a href="https://hero-dinku.github.io/index.html">Sleep<span class="highlight">Outside</span></a>
         </div>
     </header>
 
     <main class="divider">
         <div class="checkout-container">
             <div class="checkout-form">
+                <a href="https://hero-dinku.github.io/cart/index.html" class="back-to-cart">← Back to Cart</a>
                 <h2>Checkout</h2>
                 
                 <div class="success-message" id="successMessage">
@@ -263,8 +374,14 @@
                         
                         <div class="form-group">
                             <label for="zipCode">ZIP Code *</label>
-                            <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}" required>
+                            <input type="text" id="zipCode" name="zipCode" required pattern="\d{5}">
                             <div class="error-message" id="zipCodeError">Please enter a valid 5-digit ZIP code</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                            <div class="error-message" id="emailError">Please enter a valid email address</div>
                         </div>
                     </div>
 
@@ -272,241 +389,166 @@
                         <h3>Payment Information</h3>
                         <div class="form-group">
                             <label for="cardNumber">Card Number *</label>
-                            <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
-                            <div class="error-message" id="cardNumberError">Please enter a valid card number</div>
+                            <input type="text" id="cardNumber" name="cardNumber" required pattern="\d{16}">
+                            <div class="error-message" id="cardNumberError">Please enter a valid 16-digit card number</div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="expiryDate">Expiry Date *</label>
-                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
-                                <div class="error-message" id="expiryDateError">Please enter a valid expiry date</div>
+                                <label for="expiryDate">Expiration Date *</label>
+                                <input type="text" id="expiryDate" name="expiryDate" required placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
+                                <div class="error-message" id="expiryDateError">Please enter a valid expiration date (MM/YY)</div>
                             </div>
                             <div class="form-group">
                                 <label for="cvv">CVV *</label>
-                                <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                                <input type="text" id="cvv" name="cvv" required pattern="\d{3,4}">
                                 <div class="error-message" id="cvvError">Please enter a valid CVV</div>
                             </div>
                         </div>
+                        
+                        <div class="payment-icons">
+                            <div class="payment-icon">VISA</div>
+                            <div class="payment-icon">MC</div>
+                            <div class="payment-icon">AMEX</div>
+                            <div class="payment-icon">DISC</div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">Place Order</button>
+                    <button type="submit" class="submit-btn" id="submitButton">Place Order</button>
                 </form>
             </div>
 
             <div class="order-summary">
                 <h3>Order Summary</h3>
-                <div class="order-items" id="orderItems">
-                    <!-- Order items will be dynamically inserted here -->
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-details">
+                            <div class="item-name">Mountain Trek Tent</div>
+                            <div class="item-info">Qty: 1 | Color: Forest Green</div>
+                        </div>
+                        <div class="item-price">$199.99</div>
+                    </div>
+                    <div class="order-item">
+                        <div class="item-details">
+                            <div class="item-name">Ultra-light Sleeping Bag</div>
+                            <div class="item-info">Qty: 1 | Size: Regular</div>
+                        </div>
+                        <div class="item-price">$89.99</div>
+                    </div>
                 </div>
                 <div class="order-totals">
                     <div class="total-line">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
+                        <span>Subtotal</span>
+                        <span>$289.98</span>
                     </div>
                     <div class="total-line">
-                        <span>Tax:</span>
-                        <span id="tax">$0.00</span>
+                        <span>Shipping</span>
+                        <span>$15.00</span>
                     </div>
                     <div class="total-line">
-                        <span>Shipping:</span>
-                        <span id="shipping">$0.00</span>
+                        <span>Tax</span>
+                        <span>$22.87</span>
                     </div>
                     <div class="total-line grand-total">
-                        <span>Total:</span>
-                        <span id="total">$0.00</span>
+                        <span>Total</span>
+                        <span>$327.85</span>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer>&copy;NOT a real business</footer>
+    <footer>
+        <p>&copy; 2025 Sleep Outside. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Checkout functionality
-        class Checkout {
-            constructor() {
-                this.cartItems = this.getCartItems();
-                this.init();
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Validate First Name
+            const firstName = document.getElementById('firstName');
+            if (!firstName.value.trim()) {
+                document.getElementById('firstNameError').style.display = 'block';
+                isValid = false;
             }
 
-            init() {
-                this.displayOrderSummary();
-                this.setupEventListeners();
+            // Validate Last Name
+            const lastName = document.getElementById('lastName');
+            if (!lastName.value.trim()) {
+                document.getElementById('lastNameError').style.display = 'block';
+                isValid = false;
             }
 
-            getCartItems() {
-                // In a real app, this would come from localStorage or an API
-                // For demo purposes, using sample data
-                return [
-                    {
-                        id: "Dinku",
-                        name: "Dinku Tent - 3-Person, 3-Season",
-                        price: 199.99,
-                        quantity: 1
-                    },
-                    {
-                        id: "north-face-talus-4",
-                        name: "The North Face Talus Tent - 4-Person, 3-Season",
-                        price: 299.99,
-                        quantity: 2
-                    }
-                ];
+            // Validate Address
+            const address = document.getElementById('address');
+            if (!address.value.trim()) {
+                document.getElementById('addressError').style.display = 'block';
+                isValid = false;
             }
 
-            displayOrderSummary() {
-                const orderItemsContainer = document.getElementById('orderItems');
-                const subtotalElement = document.getElementById('subtotal');
-                const taxElement = document.getElementById('tax');
-                const shippingElement = document.getElementById('shipping');
-                const totalElement = document.getElementById('total');
-
-                let subtotal = 0;
-                let html = '';
-
-                this.cartItems.forEach(item => {
-                    const itemTotal = item.price * item.quantity;
-                    subtotal += itemTotal;
-                    
-                    html += `
-                        <div class="order-item">
-                            <span>${item.name} (x${item.quantity})</span>
-                            <span>$${itemTotal.toFixed(2)}</span>
-                        </div>
-                    `;
-                });
-
-                orderItemsContainer.innerHTML = html;
-
-                const tax = subtotal * 0.08;
-                const shipping = subtotal > 100 ? 0 : 10;
-                const total = subtotal + tax + shipping;
-
-                subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-                taxElement.textContent = `$${tax.toFixed(2)}`;
-                shippingElement.textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
-                totalElement.textContent = `$${total.toFixed(2)}`;
+            // Validate City
+            const city = document.getElementById('city');
+            if (!city.value.trim()) {
+                document.getElementById('cityError').style.display = 'block';
+                isValid = false;
             }
 
-            setupEventListeners() {
-                const form = document.getElementById('checkoutForm');
-                const submitBtn = document.getElementById('submitBtn');
-
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    if (this.validateForm()) {
-                        this.processOrder();
-                    }
-                });
-
-                // Real-time validation
-                const inputs = form.querySelectorAll('input, select');
-                inputs.forEach(input => {
-                    input.addEventListener('blur', () => {
-                        this.validateField(input);
-                    });
-                    
-                    input.addEventListener('input', () => {
-                        this.clearError(input);
-                    });
-                });
+            // Validate State
+            const state = document.getElementById('state');
+            if (!state.value) {
+                document.getElementById('stateError').style.display = 'block';
+                isValid = false;
             }
 
-            validateForm() {
-                const form = document.getElementById('checkoutForm');
-                const inputs = form.querySelectorAll('input, select');
-                let isValid = true;
-
-                inputs.forEach(input => {
-                    if (!this.validateField(input)) {
-                        isValid = false;
-                    }
-                });
-
-                return isValid;
+            // Validate ZIP Code
+            const zipCode = document.getElementById('zipCode');
+            if (!zipCode.value.match(/^\d{5}$/)) {
+                document.getElementById('zipCodeError').style.display = 'block';
+                isValid = false;
             }
 
-            validateField(field) {
-                const errorId = field.id + 'Error';
-                const errorElement = document.getElementById(errorId);
-
-                if (field.hasAttribute('required') && !field.value.trim()) {
-                    this.showError(field, errorElement, 'This field is required');
-                    return false;
-                }
-
-                // Specific validations
-                switch(field.id) {
-                    case 'zipCode':
-                        if (!/^\d{5}$/.test(field.value)) {
-                            this.showError(field, errorElement, 'Please enter a valid 5-digit ZIP code');
-                            return false;
-                        }
-                        break;
-                    
-                    case 'cardNumber':
-                        if (!/^\d{16}$/.test(field.value.replace(/\s/g, ''))) {
-                            this.showError(field, errorElement, 'Please enter a valid 16-digit card number');
-                            return false;
-                        }
-                        break;
-                    
-                    case 'expiryDate':
-                        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(field.value)) {
-                            this.showError(field, errorElement, 'Please enter a valid expiry date (MM/YY)');
-                            return false;
-                        }
-                        break;
-                    
-                    case 'cvv':
-                        if (!/^\d{3,4}$/.test(field.value)) {
-                            this.showError(field, errorElement, 'Please enter a valid CVV');
-                            return false;
-                        }
-                        break;
-                }
-
-                this.clearError(field);
-                return true;
+            // Validate Email
+            const email = document.getElementById('email');
+            if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
             }
 
-            showError(field, errorElement, message) {
-                field.style.borderColor = '#e74c3c';
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
+            // Validate Card Number
+            const cardNumber = document.getElementById('cardNumber');
+            if (!cardNumber.value.match(/^\d{16}$/)) {
+                document.getElementById('cardNumberError').style.display = 'block';
+                isValid = false;
             }
 
-            clearError(field) {
-                field.style.borderColor = '#ddd';
-                const errorId = field.id + 'Error';
-                const errorElement = document.getElementById(errorId);
-                if (errorElement) {
-                    errorElement.style.display = 'none';
-                }
+            // Validate Expiry Date
+            const expiryDate = document.getElementById('expiryDate');
+            if (!expiryDate.value.match(/^(0[1-9]|1[0-2])\/[0-9]{2}$/)) {
+                document.getElementById('expiryDateError').style.display = 'block';
+                isValid = false;
             }
 
-            processOrder() {
-                const submitBtn = document.getElementById('submitBtn');
-                const successMessage = document.getElementById('successMessage');
-
-                // Simulate processing
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Processing...';
-
-                setTimeout(() => {
-                    successMessage.style.display = 'block';
-                    submitBtn.textContent = 'Order Placed!';
-                    
-                    // In a real app, you would redirect to confirmation page
-                    // window.location.href = 'confirmation.html';
-                }, 2000);
+            // Validate CVV
+            const cvv = document.getElementById('cvv');
+            if (!cvv.value.match(/^\d{3,4}$/)) {
+                document.getElementById('cvvError').style.display = 'block';
+                isValid = false;
             }
-        }
 
-        // Initialize checkout when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            new Checkout();
+            // If form is valid, show success message
+            if (isValid) {
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('checkoutForm').reset();
+                // Scroll to top to show success message
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     </script>
 </body>
